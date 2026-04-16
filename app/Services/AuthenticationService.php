@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticationService
 {
-    /**
-     * US 1 : Créer un compte utilisateur
-     * En tant que visiteur, je veux créer un compte afin d'accéder aux fonctionnalités de réservation.
-     */
+    /// US 1 : S'inscrire de manière sécurisée
     public function register(array $data): Utilisateur
     {
         return Utilisateur::create([
@@ -23,10 +20,7 @@ class AuthenticationService
         ]);
     }
 
-    /**
-     * US 2 : Se connecter de manière sécurisée
-     * En tant qu'utilisateur, je veux me connecter de manière sécurisée afin de retrouver mes billets et mes cercles.
-     */
+    /// US 2 : Se connecter de manière sécurisée
     public function login(string $email, string $password): bool|Utilisateur
     {
         $utilisateur = Utilisateur::where('email', $email)->first();
@@ -39,34 +33,23 @@ class AuthenticationService
         return $utilisateur;
     }
 
-    /**
-     * US 3 : Se déconnecter
-     * En tant qu'utilisateur, je veux me déconnecter afin de protéger l'accès à mes données personnelles.
-     */
+    /// US 3 : Se déconnecter
     public function logout(): void
     {
         Auth::logout();
     }
 
-    /**
-     * Vérifier si un email existe
-     */
+
     public function emailExists(string $email): bool
     {
         return Utilisateur::where('email', $email)->exists();
     }
 
-    /**
-     * Récupérer l'utilisateur actuel
-     */
     public function getCurrentUser(): ?Utilisateur
     {
         return Auth::guard()->user();
     }
 
-    /**
-     * Mettre à jour le profil de l'utilisateur
-     */
     public function updateProfile(Utilisateur $utilisateur, array $data): Utilisateur
     {
         $utilisateur->update($data);

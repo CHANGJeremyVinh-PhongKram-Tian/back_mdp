@@ -7,10 +7,7 @@ use App\Models\Organisateur;
 
 class EventService
 {
-    /**
-     * US 8 : Parcourir la liste des événements disponibles
-     * En tant qu'utilisateur, je veux parcourir la liste des événements disponibles afin de trouver ceux qui m'intéressent.
-     */
+    /// US 11 : Consulter les événements disponibles
     public function getAvailableEvents($limit = 20, $offset = 0)
     {
         return Evenement::where('statut', 'actif')
@@ -21,10 +18,7 @@ class EventService
             ->get();
     }
 
-    /**
-     * US 12 : Créer un événement
-     * En tant qu'organisateur, je veux créer un événement (titre, date, lieu, capacité) afin de le rendre visible aux utilisateurs.
-     */
+    /// US 12 : Créer un événement
     public function createEvent(Organisateur $organisateur, array $data): Evenement
     {
         return Evenement::create([
@@ -40,20 +34,14 @@ class EventService
         ]);
     }
 
-    /**
-     * US 13 : Modifier les détails d'un événement
-     * En tant qu'organisateur, je veux modifier les détails de mon événement afin de mettre à jour les informations en cas de changement.
-     */
+    /// US 13 : Modifier les détails d'un événement
     public function updateEvent(Evenement $evenement, array $data): Evenement
     {
         $evenement->update($data);
         return $evenement;
     }
 
-    /**
-     * US 14 : Consulter les statistiques d'un événement
-     * En tant qu'organisateur, je veux consulter les statistiques (suivi) de mon événement afin de connaître le taux de remplissage.
-     */
+    /// US 14 : Consulter les statistiques d'un événement
     public function getEventStats(Evenement $evenement): array
     {
         $totalBillets = $evenement->billets()->count();
@@ -71,17 +59,11 @@ class EventService
         ];
     }
 
-    /**
-     * Obtenir un événement par ID
-     */
     public function getEventById(int $eventId): ?Evenement
     {
         return Evenement::with('organisateur', 'billets')->find($eventId);
     }
 
-    /**
-     * Obtenir les événements d'un organisateur
-     */
     public function getOrganizerEvents(Organisateur $organisateur)
     {
         return Evenement::where('id_organisateur', $organisateur->id_organisateur)
@@ -89,9 +71,6 @@ class EventService
             ->get();
     }
 
-    /**
-     * Rechercher des événements
-     */
     public function searchEvents(string $query)
     {
         return Evenement::where('titre', 'LIKE', "%{$query}%")
@@ -101,17 +80,11 @@ class EventService
             ->get();
     }
 
-    /**
-     * Supprimer un événement
-     */
     public function deleteEvent(Evenement $evenement): bool
     {
         return $evenement->delete();
     }
 
-    /**
-     * Obtenir les événements à venir
-     */
     public function getUpcomingEvents($days = 30)
     {
         $now = now();

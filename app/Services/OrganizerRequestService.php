@@ -7,10 +7,7 @@ use App\Models\Utilisateur;
 
 class OrganizerRequestService
 {
-    /**
-     * US 4 : Demander un statut "Organisateur"
-     * En tant qu'utilisateur, je veux demander un statut "Organisateur" afin de pouvoir créer et gérer mes propres événements.
-     */
+    // US 8 : Demander le statut d'organisateur
     public function requestOrganizerStatus(Utilisateur $utilisateur, array $data): Organisateur
     {
         return Organisateur::create([
@@ -21,34 +18,23 @@ class OrganizerRequestService
         ]);
     }
 
-    /**
-     * Vérifier si un utilisateur est organisateur
-     */
     public function isOrganizer(Utilisateur $utilisateur): bool
     {
         return Organisateur::where('id_utilisateur', $utilisateur->id_utilisateur)->exists();
     }
 
-    /**
-     * Récupérer les informations d'organisateur
-     */
     public function getOrganizerInfo(Utilisateur $utilisateur): ?Organisateur
     {
         return Organisateur::where('id_utilisateur', $utilisateur->id_utilisateur)->first();
     }
 
-    /**
-     * Mettre à jour les informations d'organisateur
-     */
     public function updateOrganizerInfo(Organisateur $organisateur, array $data): Organisateur
     {
         $organisateur->update($data);
         return $organisateur;
     }
 
-    /**
-     * Obtenir tous les organisateurs
-     */
+
     public function getAllOrganizers()
     {
         return Organisateur::with('utilisateur')->get();
