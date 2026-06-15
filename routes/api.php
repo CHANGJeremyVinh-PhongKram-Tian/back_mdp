@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EvenementController;
+use App\Http\Controllers\AmiController;
 
 Route::get('/user', function (Request $request) {
     $user = $request->user();
@@ -31,6 +32,15 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/evenements', [EvenementController::class, 'index']);
 Route::get('/evenements/{id}', [EvenementController::class, 'show']);
 
-// Routes Dashboard Organisateur
-Route::get('/organizer/{id}/dashboard-stats', [OrganizerDashboardController::class, 'getStats']);
-Route::get('/organizer/{id}/events', [OrganizerDashboardController::class, 'getEvents']);
+// ─── Routes Amis (authentification requise) ──────────────────────────────────
+Route::middleware('auth:sanctum')->group(function () {
+    // Recherche d'utilisateurs : GET /api/utilisateurs?search=marie
+    Route::get('/utilisateurs', [AmiController::class, 'search']);
+
+    // CRUD amis
+    Route::get('/amis', [AmiController::class, 'index']);       // Mes amis
+    Route::post('/amis', [AmiController::class, 'store']);      // Envoyer une demande
+    Route::patch('/amis/{id}', [AmiController::class, 'update']); // Accepter / Refuser
+    Route::delete('/amis/{id}', [AmiController::class, 'destroy']); // Supprimer / Annuler
+});
+
